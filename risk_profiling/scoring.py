@@ -28,7 +28,8 @@ CAP_Z, CAP_PERM, CAP_EXP = 3.5, 10, 5
 MIN_PEERS = 5  # debajo de esto el peer group es muy chico para una dispersión confiable
 
 # Cortes de categoría (puntos de score) y etiquetas, de menor a mayor riesgo.
-CORTES = [0, 10, 20, 30, 100]
+# El último tramo es abierto para cubrir cualquier score hasta el máximo (100).
+CORTES = [0, 10, 20, 30, float("inf")]
 ETIQUETAS = ["LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
 
 # Texto legible por señal, usando los valores reales del usuario.
@@ -61,7 +62,8 @@ def build_features(users, perms, logs):
     logs = logs.copy()
     perm_pairs = set(zip(perms.user_id, perms.resource_id))
     logs["sin_permiso"] = [(u, r) not in perm_pairs for u, r in zip(logs.user_id, logs.resource_id)]
-    logs["off_hours"] = (logs.timestamp.dt.hour < 7) | (logs.timestamp.dt.hour > 20)
+    hora = logs.timestamp.dt.hour
+    logs["off_hours"] = (hora < 7) | (hora > 20)
 
     feat = logs.groupby("user_id").agg(
         volumen       = ("timestamp",   "size"),   # H3

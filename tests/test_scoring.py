@@ -30,7 +30,8 @@ def test_rango_de_score(df):
 
 
 def test_categorias_validas(df):
-    assert set(df.category.dropna().unique()) <= set(ETIQUETAS)
+    assert df.category.notna().all()  # todo score cae en alguna categoría
+    assert set(df.category.unique()) <= set(ETIQUETAS)
 
 
 def test_vol_z_finito(df):
