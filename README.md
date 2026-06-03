@@ -57,6 +57,21 @@ GET /users/{user_id}/risk        # score, categoría y señales de un usuario
 GET /users?category=HIGH&limit=10  # usuarios por categoría, ordenados por score desc
 ```
 
+## Parte 4 — Documento de análisis
+
+Hallazgos, decisiones de modelado, limitaciones y monitoreo en producción:
+[`docs/ANALISIS.md`](docs/ANALISIS.md).
+
+## Bonus — Dashboard
+
+Reporte visual (distribución por categoría, top 10 con señales y comportamiento
+vs. peer group). Se puede abrir directamente [`docs/dashboard.html`](docs/dashboard.html),
+o regenerarlo —se escribe ahí mismo y se abre en el navegador—:
+
+```bash
+python -m risk_profiling.dashboard
+```
+
 ## Tests
 
 ```bash
@@ -68,13 +83,16 @@ pytest
 ```
 risk-profiling/
 ├── data/                  # CSVs de entrada
-├── docs/                  # Enunciado del challenge
+├── docs/                  # Challenge, análisis (Parte 4) y dashboard
+│   ├── ANALISIS.md        # Parte 4 — documento de análisis
+│   └── dashboard.html     # Bonus — reporte visual generado
 ├── notebooks/
 │   ├── 1_eda.ipynb        # Parte 1 — EDA
 │   └── 2_scoring.ipynb    # Parte 2 — scoring (narrativa)
 ├── risk_profiling/        # Paquete
 │   ├── scoring.py         # Modelo de scoring (Parte 2)
 │   ├── api.py             # API REST (Parte 3)
+│   ├── dashboard.py       # Bonus — dashboard (python -m risk_profiling.dashboard)
 │   └── __main__.py        # CLI: python -m risk_profiling
 ├── tests/                 # Tests de scoring y API
 ├── outputs/               # Resultados generados (no versionado)
