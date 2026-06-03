@@ -19,3 +19,6 @@ outputs/
 
 # Herramientas locales
 .claude/
+
+# Notas personales (no forman parte de la entrega)
+docs/NOTAS_MONITOREO.md
