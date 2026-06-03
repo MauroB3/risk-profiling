@@ -6,3 +6,12 @@ seaborn>=0.12
 plotly>=5.15
 jupyter>=1.0
 ipykernel>=6.0
+
+# API (Parte 3)
+fastapi>=0.110
+uvicorn[standard]>=0.27
+
+# Tests
+pytest>=8.0
+httpx>=0.27
+
