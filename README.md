@@ -1,6 +1,7 @@
 # User Risk Profiling Challenge
 
-Sistema de detección de comportamientos anómalos y scoring de riesgo por usuario.
+Sistema de detección de comportamientos anómalos y scoring de riesgo por usuario,
+a partir de logs de accesos y el inventario de permisos.
 
 ## Setup
 
@@ -8,21 +9,51 @@ Sistema de detección de comportamientos anómalos y scoring de riesgo por usuar
 pip install -r requirements.txt
 ```
 
-## Part 1 — EDA
+## Parte 1 — EDA
+
+Análisis exploratorio, calidad de datos e hipótesis de anomalías:
 
 ```bash
-cd notebooks
-jupyter notebook 01_eda.ipynb
+jupyter lab notebooks/1_eda.ipynb
+```
+
+## Parte 2 — Scoring de riesgo
+
+Modelo de scoring por usuario (heurística sobre 5 señales de comportamiento,
+validada con Isolation Forest). La narrativa está en la notebook:
+
+```bash
+jupyter lab notebooks/2_scoring.ipynb
+```
+
+La lógica está empaquetada en `risk_profiling/`. Para generar los scores sobre
+los CSV de `data/` y escribir `outputs/risk_scores.csv`:
+
+```bash
+python -m risk_profiling
+```
+
+Reutilizable como librería (lo consume la API de la Parte 3):
+
+```python
+from risk_profiling import compute_risk_scores
+
+df = compute_risk_scores("data")  # user_id, score, category, top_signals, ...
 ```
 
 ## Estructura
 
 ```
-challenge-risk-profiling/
-├── data/               # CSVs de entrada
-├── docs/               # Enunciado del challenge
+risk-profiling/
+├── data/                  # CSVs de entrada
+├── docs/                  # Enunciado del challenge
 ├── notebooks/
-│   └── 01_eda.ipynb    # Análisis exploratorio (Parte 1)
+│   ├── 1_eda.ipynb        # Parte 1 — EDA
+│   └── 2_scoring.ipynb    # Parte 2 — scoring (narrativa)
+├── risk_profiling/        # Paquete
+│   ├── scoring.py         # Modelo de scoring (Parte 2)
+│   └── __main__.py        # CLI: python -m risk_profiling
+├── outputs/               # Resultados generados (no versionado)
 ├── requirements.txt
 └── README.md
 ```
